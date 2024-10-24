@@ -1,39 +1,99 @@
-Pushbullet Notification Script
+# Push Bullet
 
-This Bash script offers a convenient way to send notifications to your Pushbullet devices directly from your command line.
+Push Bullet is a simple application that allows you to send notifications and messages to your devices using the Pushbullet API. This tool is designed for developers who want to integrate Pushbullet notifications into their applications or automate notification delivery.
 
-Features:
+## Features
 
-Configurability: Specify the Pushbullet API token either in a configuration file (~/.pushbullet by default) or as a command-line argument using the -c option.
+- **Send Notifications:** Easily send notifications to any device linked to your Pushbullet account.
+- **Customizable Messages:** Tailor your notifications with custom titles, messages, and more.
+- **Multi-Platform Support:** Works across different operating systems and devices.
+- **Easy Integration:** Simple API to integrate into your existing applications or scripts.
 
-Help Message: Get usage instructions and information about available options with -h or --help.
+## Requirements
 
-Error Handling: The script checks for various potential issues, including:
-Missing or invalid Pushbullet API token
-Invalid title format (optional validation)
-HTTP errors returned by the Pushbullet API (rate limit exceeded, authentication failure, etc.)
+- Python 3.x
+- A valid Pushbullet account and API key.
 
-Default Values: If no title or body is provided, the script uses sensible defaults ("Default Title" and "Default Body").
-Usage:
+## Installation
 
-Bash
-# Send a notification with default title and body:
-./pushbullet_notification.sh
+To install Push Bullet, follow these steps:
 
-# Send a notification with custom title and body:
-./pushbullet_notification.sh "My Custom Title" "This is the message content."
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/OddRefrigerator/push_bullet.git
+   cd push_bullet
+   ```
 
-# Specify a different config file path:
-./pushbullet_notification.sh -c /path/to/your/config.file
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Use code with caution.
+## Usage
 
-Installation:
-Save the script as a file (e.g., pushbullet_notification.sh).
-Make the script executable: chmod +x pushbullet_notification.sh.
-(Optional) Create a configuration file (~/.pushbullet) containing your Pushbullet API token on a single line: PUSHBULLET_TOKEN="your_api_token".
+To send a notification using Push Bullet, you can use the following example script:
 
-Important:
-Replace your_api_token with your actual Pushbullet API token obtained from your account settings.
-For enhanced security, consider storing the API token in a password manager or encrypting the configuration file.
-I hope this summary provides all the necessary information for users to effectively utilize this script!
+```python
+import requests
+
+API_KEY = 'YOUR_PUSHBULLET_API_KEY'
+DEVICE_IDENTIFIER = 'YOUR_DEVICE_IDENTIFIER'
+
+def send_notification(title, message):
+    url = 'https://api.pushbullet.com/v2/pushes'
+    headers = {
+        'Access-Token': API_KEY,
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'type': 'note',
+        'title': title,
+        'body': message,
+        'device_iden': DEVICE_IDENTIFIER
+    }
+    response = requests.post(url, headers=headers, json=data)
+    return response.json()
+
+# Example usage
+response = send_notification('Hello!', 'This is a test notification.')
+print(response)
+```
+
+Replace `YOUR_PUSHBULLET_API_KEY` and `YOUR_DEVICE_IDENTIFIER` with your actual Pushbullet API key and device identifier.
+
+## API Reference
+
+For more information about the Pushbullet API and its capabilities, visit the [Pushbullet API Documentation](https://docs.pushbullet.com/).
+
+## Contributing
+
+Contributions are welcome! If you would like to contribute, please fork the repository and submit a pull request.
+
+### Steps for Contribution
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Description of your feature or fix"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a Pull Request with a description of your changes.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+This project was created by [OddRefrigerator](https://github.com/OddRefrigerator).
+
+## Contact
+
+For any inquiries or issues, feel free to open an issue on GitHub or contact the repository owner.
